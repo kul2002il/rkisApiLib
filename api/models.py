@@ -35,9 +35,9 @@ class Book(models.Model):
 	title = models.CharField(max_length=255, verbose_name="Название", default='')
 	date = models.DateField(auto_now_add=True, null=True, verbose_name='Дата публикации')
 	author = models.ManyToManyField(Author)
-	category = models.ForeignKey(Category, on_delete=models.DO_NOTHING())
+	category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, default=1)
 	genre = models.ManyToManyField(Genre)
-	publisher = models.ForeignKey(Publisher, on_delete=models.DO_NOTHING())
+	publisher = models.ForeignKey(Publisher, on_delete=models.DO_NOTHING, default=1)
 
 	def __str__(self):
 		return self.title
