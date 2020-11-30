@@ -1,0 +1,4 @@
+pip install django djangorestframework django-cors-headers Pillow
+
+git log --pretty=format:"%h | %s %d" --graph
+

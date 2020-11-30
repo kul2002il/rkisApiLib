@@ -11,21 +11,21 @@ class Author(models.Model):
 
 
 class Genre(models.Model):
-	title = models.CharField(max_length=255, verbose_name="Жанр", default='')
+	title = models.CharField(max_length=255, verbose_name="Жанр", default='', unique=True)
 
 	def __str__(self):
 		return self.title
 
 
 class Category(models.Model):
-	title = models.CharField(max_length=255, verbose_name="Категория", default='')
+	title = models.CharField(max_length=255, verbose_name="Категория", default='', unique=True)
 
 	def __str__(self):
 		return self.title
 
 
 class Publisher(models.Model):
-	title = models.CharField(max_length=255, verbose_name="Издательство", default='')
+	title = models.CharField(max_length=255, verbose_name="Издательство", default='', unique=True)
 
 	def __str__(self):
 		return self.title
