@@ -9,8 +9,8 @@ from rest_framework.views import APIView
 from django.http import Http404
 from rest_framework.authtoken.models import Token
 
-from .models import Book
-from .serializers import SerBook
+from .models import *
+from .serializers import *
 
 
 class ListBook(APIView):
@@ -28,6 +28,26 @@ class DetailBook(APIView):
 			raise Http404
 
 	def get(self, request, pk, format=None):
-		book = self.get_object(pk)
-		serializer = SerBook(book)
+		data = self.get_object(pk)
+		serializer = SerBook(data)
+		return Response(serializer.data)
+
+
+class ListChapter(APIView):
+	def get(self, request, pk, format=None):
+		chapters = Chapter.objects.filter(book=pk)
+		serializer = SerChapterNotText(chapters, many=True)
+		return Response(serializer.data)
+
+
+class DetailChapter(APIView):
+	def get_object(pk):
+		try:
+			return Chapter.objects.get(pk=pk)
+		except Chapter.DoesNotExist:
+			raise Http404
+
+	def get(self, request, book, number, format=None):
+		data = self.get_object(book=book, number=number)
+		serializer = SerChapter(data)
 		return Response(serializer.data)

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+import re
+
 from .models import Author, Genre, Category, Publisher, Chapter, Book
 
 
@@ -8,28 +10,39 @@ class SerAuthor(serializers.ModelSerializer):
 		fields = '__all__'
 
 
-class SerAuthor(serializers.ModelSerializer):
+class SerGenre(serializers.ModelSerializer):
 	class Meta:
 		model = Genre
 		fields = '__all__'
 
 
-class SerAuthor(serializers.ModelSerializer):
+class SerCategory(serializers.ModelSerializer):
 	class Meta:
 		model = Category
 		fields = '__all__'
 
 
-class SerAuthor(serializers.ModelSerializer):
+class SerPublisher(serializers.ModelSerializer):
 	class Meta:
 		model = Publisher
 		fields = '__all__'
 
 
-class SerAuthor(serializers.ModelSerializer):
+class SerChapterNotText(serializers.ModelSerializer):
 	class Meta:
 		model = Chapter
-		fields = '__all__'
+		fields = 'number', 'title'
+
+	def validate_number(self, value):
+		if re.match('[0-9.]+', value) is None:
+			raise serializers.ValidationError("Chapter number is not format.")
+		return value
+
+
+class SerChapter(SerChapterNotText):
+	class Meta:
+		model = Chapter
+		fields = 'number', 'title', 'text'
 
 
 class SerBook(serializers.ModelSerializer):
