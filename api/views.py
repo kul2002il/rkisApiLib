@@ -19,12 +19,26 @@ class ListAuthor(APIView):
 		serializer = SerAuthor(data, many=True)
 		return Response(serializer.data)
 
+	def post(self, request, format=None):
+		serializer = SerAuthor(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=HTTP_201_CREATED)
+		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 
 class ListGenre(APIView):
 	def get(self, request, format=None):
 		data = Genre.objects.all()
 		serializer = SerGenre(data, many=True)
 		return Response(serializer.data)
+
+	def post(self, request, format=None):
+		serializer = SerGenre(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=HTTP_201_CREATED)
+		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class ListCategory(APIView):
@@ -33,6 +47,13 @@ class ListCategory(APIView):
 		serializer = SerCategory(data, many=True)
 		return Response(serializer.data)
 
+	def post(self, request, format=None):
+		serializer = SerCategory(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=HTTP_201_CREATED)
+		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 
 class ListPublisher(APIView):
 	def get(self, request, format=None):
@@ -40,12 +61,26 @@ class ListPublisher(APIView):
 		serializer = SerPublisher(data, many=True)
 		return Response(serializer.data)
 
+	def post(self, request, format=None):
+		serializer = SerPublisher(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=HTTP_201_CREATED)
+		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 
 class ListBook(APIView):
 	def get(self, request, format=None):
 		books = Book.objects.all()
 		serializer = SerBook(books, many=True)
 		return Response(serializer.data)
+
+	def post(self, request, format=None):
+		serializer = SerBook(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=HTTP_201_CREATED)
+		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class DetailBook(APIView):
@@ -60,6 +95,17 @@ class ListChapter(APIView):
 		chapters = Chapter.objects.filter(book=pk_book)
 		serializer = SerChapterNotText(chapters, many=True)
 		return Response(serializer.data)
+
+	def post(self, request, pk_book, format=None):
+		get_object_or_404(Book, pk=pk_book)
+		request.data['book'] = pk_book
+		serializer = SerChapterPOST(data=request.data) # , context={'book': pk_book}, partial=True
+		# serializer.initial_data.book = pk_book
+		print(request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=HTTP_201_CREATED)
+		return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class DetailChapter(APIView):

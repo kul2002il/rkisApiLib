@@ -45,6 +45,12 @@ class SerChapter(SerChapterNotText):
 		fields = 'number', 'title', 'text'
 
 
+class SerChapterPOST(SerChapterNotText):
+	class Meta:
+		model = Chapter
+		fields = 'book', 'number', 'title', 'text'
+
+
 class SerBook(serializers.ModelSerializer):
 	class Meta:
 		model = Book
