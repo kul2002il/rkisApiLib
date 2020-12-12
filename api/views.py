@@ -13,6 +13,34 @@ from .models import *
 from .serializers import *
 
 
+class ListAuthor(APIView):
+	def get(self, request, format=None):
+		data = Author.objects.all()
+		serializer = SerAuthor(data, many=True)
+		return Response(serializer.data)
+
+
+class ListGenre(APIView):
+	def get(self, request, format=None):
+		data = Genre.objects.all()
+		serializer = SerGenre(data, many=True)
+		return Response(serializer.data)
+
+
+class ListCategory(APIView):
+	def get(self, request, format=None):
+		data = Category.objects.all()
+		serializer = SerCategory(data, many=True)
+		return Response(serializer.data)
+
+
+class ListPublisher(APIView):
+	def get(self, request, format=None):
+		data = Publisher.objects.all()
+		serializer = SerPublisher(data, many=True)
+		return Response(serializer.data)
+
+
 class ListBook(APIView):
 	def get(self, request, format=None):
 		books = Book.objects.all()
@@ -21,21 +49,21 @@ class ListBook(APIView):
 
 
 class DetailBook(APIView):
-	def get(self, request, pk, format=None):
-		data = get_object_or_404(Book, pk=pk)
+	def get(self, request, pk_book, format=None):
+		data = get_object_or_404(Book, pk=pk_book)
 		serializer = SerBook(data)
 		return Response(serializer.data)
 
 
 class ListChapter(APIView):
-	def get(self, request, pk, format=None):
-		chapters = Chapter.objects.filter(book=pk)
+	def get(self, request, pk_book, format=None):
+		chapters = Chapter.objects.filter(book=pk_book)
 		serializer = SerChapterNotText(chapters, many=True)
 		return Response(serializer.data)
 
 
 class DetailChapter(APIView):
-	def get(self, request, book, number, format=None):
-		data = get_object_or_404(Chapter, book=book, number=number)
+	def get(self, request, pk_book, number, format=None):
+		data = get_object_or_404(Chapter, book=pk_book, number=number)
 		serializer = SerChapter(data)
 		return Response(serializer.data)
