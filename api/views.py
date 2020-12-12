@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -21,14 +21,8 @@ class ListBook(APIView):
 
 
 class DetailBook(APIView):
-	def get_object(self, pk):
-		try:
-			return Book.objects.get(pk=pk)
-		except Book.DoesNotExist:
-			raise Http404
-
 	def get(self, request, pk, format=None):
-		data = self.get_object(pk)
+		data = get_object_or_404(Book, pk=pk)
 		serializer = SerBook(data)
 		return Response(serializer.data)
 
@@ -41,13 +35,7 @@ class ListChapter(APIView):
 
 
 class DetailChapter(APIView):
-	def get_object(pk):
-		try:
-			return Chapter.objects.get(pk=pk)
-		except Chapter.DoesNotExist:
-			raise Http404
-
 	def get(self, request, book, number, format=None):
-		data = self.get_object(book=book, number=number)
+		data = get_object_or_404(Chapter, book=book, number=number)
 		serializer = SerChapter(data)
 		return Response(serializer.data)
